@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Publica tu negocio gratis — Ourense GO</title>
+<meta name="description" content="Registra tu negocio en Ourense GO y empieza a recibir clientes hoy mismo. Gratis, rápido y sin tecnicismos.">
+
+<!-- ══════════════════════════════════════════
+  CONFIGURA AQUÍ tu URL de Google Apps Script
+  (ver instrucciones al final de este archivo)
+  ══════════════════════════════════════════ -->
+<script>
+  const GAS_URL     = 'https://script.google.com/macros/s/AKfycbwv1QER1icq8AzivDUbCB_mlMkfz9uoVjjfHk3C7BLasp8urEFVdiPDyfjAhunNQk1a/exec';
+  const REDIRECT_URL = 'https://ourensego.es';
+</script>
+
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --pri:#f9a825;--sec:#e65100;
+  --text:#1c1c1e;--muted:#777;
+  --border:#e0e0e0;--bg:#fff;--warm:#fff8e1;
+  --sh-s:0 2px 8px rgba(0,0,0,.06);
+  --sh-m:0 6px 24px rgba(0,0,0,.09);
+  --r-s:8px;--r-m:14px;--r-l:20px;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:linear-gradient(160deg,#fff8e1 0%,#fff3e0 50%,#ffe0b2 100%);min-height:100vh;color:var(--text)}
+a{text-decoration:none;color:inherit}
+img{display:block;max-width:100%}
+
+/* ── HEADER ── */
+.hdr{padding:18px 24px;display:flex;justify-content:center;align-items:center}
+.hdr-brand{display:flex;align-items:center;gap:10px}
+.hdr-brand img{height:48px;width:auto;object-fit:contain}
+.hdr-fallback{font-size:20px;font-weight:900}
+.hdr-fallback strong{color:var(--sec)}
+.hdr-sep{width:1px;height:28px;background:var(--border);margin:0 4px}
+.hdr-tag{font-size:13px;color:var(--muted);font-weight:500}
+
+/* ── HERO ── */
+.hero{text-align:center;padding:28px 24px 36px;max-width:640px;margin:0 auto}
+.hero-badge{display:inline-flex;align-items:center;gap:7px;background:#fff;border:1px solid var(--border);border-radius:99px;padding:7px 16px;font-size:12px;font-weight:700;color:var(--sec);margin-bottom:18px;box-shadow:var(--sh-s)}
+.hero-badge::before{content:'●';color:#22c55e;font-size:9px}
+.hero-title{font-size:clamp(24px,5vw,40px);font-weight:900;line-height:1.15;color:var(--text);margin-bottom:12px}
+.hero-title em{font-style:normal;background:linear-gradient(135deg,var(--pri),var(--sec));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hero-sub{font-size:15px;color:var(--muted);line-height:1.75;max-width:480px;margin:0 auto 20px}
+.hero-pills{display:flex;gap:7px;justify-content:center;flex-wrap:wrap}
+.hero-pill{background:#fff;border:1px solid var(--border);border-radius:99px;padding:5px 12px;font-size:12px;font-weight:700;color:var(--muted)}
+
+/* ── PROGRESS ── */
+.progress{display:flex;align-items:center;justify-content:center;gap:8px;margin:28px 0 24px}
+.prog-step{display:flex;align-items:center;gap:8px}
+.prog-dot{width:28px;height:28px;border-radius:50%;background:#f0c070;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;transition:all .3s;flex-shrink:0}
+.prog-dot.done{background:var(--sec)}
+.prog-line{width:32px;height:2px;background:#f0c070;transition:background .3s}
+.prog-line.done{background:var(--sec)}
+.prog-label{font-size:10px;font-weight:700;color:var(--muted);text-align:center;margin-top:4px;white-space:nowrap}
+
+/* ── FORM WRAPPER ── */
+.form-wrap{max-width:720px;margin:0 auto;padding:0 16px 60px}
+
+/* ── CARD ── */
+.card{background:#fff;border-radius:var(--r-l);padding:26px 26px 22px;box-shadow:var(--sh-m);margin-bottom:18px;border-left:4px solid var(--pri);position:relative;overflow:hidden}
+.card::after{content:'';position:absolute;top:0;right:0;width:80px;height:80px;background:linear-gradient(225deg,var(--warm),transparent);border-radius:0 var(--r-l) 0 80px;pointer-events:none}
+.card-title{font-size:15px;font-weight:800;color:var(--sec);margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.card-sub{font-size:12px;color:var(--muted);margin-bottom:20px}
+.card-divider{border:none;border-top:1px dashed var(--border);margin:18px 0}
+
+/* ── FIELDS ── */
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.field{margin-bottom:14px}
+.field:last-child{margin-bottom:0}
+label{display:block;font-size:13px;font-weight:700;color:#444;margin-bottom:5px}
+.req{color:var(--sec)}
+input[type=text],input[type=tel],input[type=email],input[type=url],input[type=number],select,textarea{
+  width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:var(--r-s);
+  font-size:14px;color:var(--text);background:#fafafa;transition:all .2s;
+  outline:none;font-family:inherit;-webkit-appearance:none}
+input:focus,select:focus,textarea:focus{border-color:var(--pri);background:#fff;box-shadow:0 0 0 3px rgba(249,168,37,.13)}
+input.error,select.error,textarea.error{border-color:#ef4444;background:#fff5f5;box-shadow:0 0 0 3px rgba(239,68,68,.08)}
+textarea{resize:vertical;min-height:88px;line-height:1.6}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23999' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center;padding-right:34px;cursor:pointer}
+input[readonly]{background:#f0f0f0;color:#999;cursor:default}
+.hint{font-size:11px;color:#aaa;margin-top:4px;line-height:1.4}
+.field-error-msg{font-size:11px;color:#ef4444;margin-top:4px;display:none}
+input.error ~ .field-error-msg,select.error ~ .field-error-msg{display:block}
+
+/* ── PHONE PREFIX ── */
+.phone-wrap{display:flex;gap:8px}
+.phone-prefix{width:70px!important;flex-shrink:0}
+
+/* ── RADIO GROUP ── */
+.radio-group{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:5px}
+.radio-item{display:flex;align-items:center;gap:8px;padding:10px 13px;border:1.5px solid var(--border);border-radius:var(--r-s);cursor:pointer;transition:all .2s;background:#fafafa}
+.radio-item:hover{border-color:var(--pri);background:var(--warm)}
+.radio-item input[type=radio]{width:16px;height:16px;accent-color:var(--sec);cursor:pointer;flex-shrink:0}
+.radio-item label{margin:0;cursor:pointer;font-size:13px;font-weight:600;color:#555}
+.radio-item.checked{border-color:var(--sec);background:#fff3e0}
+.radio-group.error-border{outline:2px solid #ef4444;border-radius:var(--r-s);outline-offset:2px}
+
+/* ── HONEYPOT ── */
+.hp{display:none!important;visibility:hidden;position:absolute}
+
+/* ── ERROR BOX ── */
+.error-box{background:#fff0f0;border:1.5px solid #f9a825;border-radius:var(--r-s);padding:12px 14px;margin-bottom:18px;color:#c0392b;font-size:13px;display:none;align-items:center;gap:8px}
+.error-box.show{display:flex}
+
+/* ── TRUST BADGES ── */
+.trust-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin:24px 0 18px}
+.trust-badge{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--muted)}
+
+/* ── SUBMIT ── */
+.submit-btn{width:100%;padding:17px;background:linear-gradient(135deg,var(--pri),var(--sec));color:#fff;border:none;border-radius:var(--r-l);font-size:17px;font-weight:800;cursor:pointer;transition:all .25s;box-shadow:0 6px 20px rgba(230,81,0,.3);display:flex;align-items:center;justify-content:center;gap:10px}
+.submit-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 28px rgba(230,81,0,.42)}
+.submit-btn:disabled{opacity:.65;cursor:not-allowed;transform:none}
+.submit-btn .spinner{width:20px;height:20px;border:3px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none;flex-shrink:0}
+.submit-btn.loading .spinner{display:block}
+.submit-btn.loading .btn-text{display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.footer-note{text-align:center;font-size:11px;color:#bbb;margin-top:14px;line-height:1.7}
+
+/* ── REDIRECT OVERLAY ── */
+#redir-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(255,248,225,.97);
+  z-index:9999;
+  flex-direction:column;align-items:center;justify-content:center;gap:16px;
+  text-align:center;padding:24px;
+  backdrop-filter:blur(4px);
+}
+#redir-overlay.show{display:flex}
+.redir-icon{font-size:72px;animation:popIn .5s cubic-bezier(.26,1.5,.5,1) both}
+.redir-title{font-size:26px;font-weight:900;color:var(--sec)}
+.redir-sub{font-size:15px;color:var(--muted);max-width:380px;line-height:1.65}
+.redir-bar-wrap{width:260px;height:6px;background:#f0d090;border-radius:99px;overflow:hidden;margin-top:8px}
+.redir-bar{height:100%;width:0%;background:linear-gradient(to right,var(--pri),var(--sec));border-radius:99px;transition:width 1.9s ease}
+.redir-bar.go{width:100%}
+@keyframes popIn{from{transform:scale(.3);opacity:0}to{transform:scale(1);opacity:1}}
+
+/* ── RESPONSIVE ── */
+@media(max-width:600px){
+  .row2,.row3{grid-template-columns:1fr}
+  .radio-group{grid-template-columns:1fr}
+  .card{padding:18px 16px 16px}
+  .prog-line{width:18px}
+  .prog-label{display:none}
+}
+@media(max-width:400px){
+  .hero-title{font-size:22px}
+  .prog-dot{width:22px;height:22px;font-size:10px}
+}
+</style>
+</head>
+<body>
+
+<!-- REDIRECT OVERLAY -->
+<div id="redir-overlay">
+  <div class="redir-icon">🎉</div>
+  <h2 class="redir-title">¡Solicitud enviada!</h2>
+  <p class="redir-sub">Hemos recibido tus datos correctamente. Te contactaremos en menos de 24h.</p>
+  <div class="redir-bar-wrap"><div class="redir-bar" id="redir-bar"></div></div>
+  <p style="font-size:12px;color:#bbb;margin-top:4px">Redirigiendo a ourensego.es…</p>
+</div>
+
+<!-- HEADER -->
+<header class="hdr">
+  <div class="hdr-brand">
+    <img src="Iconos Ourense Go/Logo de ourense Go.png" alt="Ourense GO"
+         onerror="this.style.display='none';document.getElementById('hdr-fb').style.display='block'">
+    <span class="hdr-fallback" id="hdr-fb" style="display:none">Ourense <strong>GO</strong></span>
+    <div class="hdr-sep"></div>
+    <span class="hdr-tag">Directorio de negocios locales</span>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">Registro gratuito · Sin permanencia</div>
+  <h1 class="hero-title">Pon tu negocio en el mapa de <em>Ourense</em></h1>
+  <p class="hero-sub">Rellena el formulario y nuestro equipo te contactará en menos de 24 horas para crear tu página web gratis.</p>
+  <div class="hero-pills">
+    <span class="hero-pill">✅ Sin tecnicismos</span>
+    <span class="hero-pill">⚡ Lista en 24h</span>
+    <span class="hero-pill">📱 Optimizada para móvil</span>
+    <span class="hero-pill">🔧 Soporte incluido</span>
+  </div>
+</div>
+
+<!-- PROGRESS STEPS -->
+<div class="progress" id="progress-bar">
+  <div class="prog-step">
+    <div>
+      <div class="prog-dot done" id="dot-1">1</div>
+      <div class="prog-label">Negocio</div>
+    </div>
+  </div>
+  <div class="prog-line done" id="line-1"></div>
+  <div class="prog-step">
+    <div>
+      <div class="prog-dot" id="dot-2">2</div>
+      <div class="prog-label">Dirección</div>
+    </div>
+  </div>
+  <div class="prog-line" id="line-2"></div>
+  <div class="prog-step">
+    <div>
+      <div class="prog-dot" id="dot-3">3</div>
+      <div class="prog-label">Contacto</div>
+    </div>
+  </div>
+  <div class="prog-line" id="line-3"></div>
+  <div class="prog-step">
+    <div>
+      <div class="prog-dot" id="dot-4">4</div>
+      <div class="prog-label">Más info</div>
+    </div>
+  </div>
+</div>
+
+<!-- FORM -->
+<div class="form-wrap">
+
+  <div class="error-box" id="error-box">⚠️ Revisa los campos marcados en rojo e inténtalo de nuevo.</div>
+
+  <form id="lead-form" novalidate>
+    <input type="text" name="website_url" class="hp" tabindex="-1" autocomplete="off">
+
+    <!-- ══ CARD 1: Datos del negocio ══ -->
+    <div class="card" id="card-1">
+      <div class="card-title">📋 Datos del negocio</div>
+      <div class="card-sub">Información principal de tu establecimiento</div>
+
+      <div class="field">
+        <label for="f-negocio">Nombre del negocio <span class="req">*</span></label>
+        <input type="text" id="f-negocio" name="negocio"
+               placeholder="Ej: Minimarket García, Bar O Barril, Farmacia Central…" required>
+        <span class="field-error-msg">Introduce el nombre del negocio</span>
+      </div>
+
+      <div class="row2">
+        <div class="field">
+          <label for="f-categoria">Categoría <span class="req">*</span></label>
+          <select id="f-categoria" name="categoria" required>
+            <option value="">— Selecciona —</option>
+            <option>🛒 Minimarket / Alimentación</option>
+            <option>🍔 Restaurante / Comida Rápida</option>
+            <option>🥖 Panadería / Pastelería</option>
+            <option>☕ Bar / Cafetería</option>
+            <option>💊 Farmacia / Óptica / Parafarmacia</option>
+            <option>🔌 Electrodomésticos / Tecnología</option>
+            <option>🏠 Limpieza y Hogar</option>
+            <option>👗 Ropa y Calzado / Moda</option>
+            <option>📚 Papelería / Librería</option>
+            <option>✂️ Peluquería / Estética / Belleza</option>
+            <option>🔧 Servicios / Reparaciones</option>
+            <option>🏥 Salud / Clínica / Fisioterapia</option>
+            <option>📦 Otro tipo de negocio</option>
+          </select>
+          <span class="field-error-msg">Selecciona una categoría</span>
+        </div>
+        <div class="field">
+          <label for="f-horario">Horario de apertura</label>
+          <select id="f-horario" name="horario">
+            <option value="">— Selecciona —</option>
+            <option>Abierto 24 horas</option>
+            <option>7:00 – 00:00 (7am a medianoche)</option>
+            <option>8:00 – 22:00</option>
+            <option>9:00 – 21:00</option>
+            <option>9:00 – 14:00 / 17:00 – 21:00</option>
+            <option>Lunes a Viernes (horario laboral)</option>
+            <option>Personalizado</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ CARD 2: Dirección ══ -->
+    <div class="card" id="card-2">
+      <div class="card-title">📍 Dirección del negocio</div>
+      <div class="card-sub">Para mostrar tu ubicación en el mapa y encontrarte en Ourense</div>
+
+      <div class="field">
+        <label for="f-calle">Calle y número <span class="req">*</span></label>
+        <input type="text" id="f-calle" name="calle"
+               placeholder="Ej: Rúa do Paseo, 12 · Av. de Ourense, 45" required>
+        <span class="field-error-msg">Introduce la calle y número</span>
+      </div>
+
+      <div class="row2">
+        <div class="field">
+          <label for="f-barrio">Barrio / Zona</label>
+          <input type="text" id="f-barrio" name="barrio"
+                 placeholder="Ej: Centro, A Ponte, Vinteún…">
+        </div>
+        <div class="field">
+          <label for="f-cp">Código postal</label>
+          <input type="text" id="f-cp" name="cp"
+                 placeholder="32001" maxlength="5"
+                 pattern="\d{5}" title="Introduce un código postal de 5 dígitos">
+        </div>
+      </div>
+
+      <div class="row2">
+        <div class="field">
+          <label for="f-ciudad">Ciudad <span class="req">*</span></label>
+          <input type="text" id="f-ciudad" name="ciudad" value="Ourense" required>
+          <span class="field-error-msg">Introduce la ciudad</span>
+        </div>
+        <div class="field">
+          <label for="f-gmaps">Enlace Google Maps (opcional)</label>
+          <input type="url" id="f-gmaps" name="gmaps"
+                 placeholder="https://maps.google.com/…">
+          <p class="hint">Pega el link para compartir si lo tienes</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ CARD 3: Datos de contacto ══ -->
+    <div class="card" id="card-3">
+      <div class="card-title">📱 Datos de contacto</div>
+      <div class="card-sub">Así nos ponemos en contacto para crear tu página web</div>
+
+      <div class="row2">
+        <div class="field">
+          <label for="f-contacto">Tu nombre <span class="req">*</span></label>
+          <input type="text" id="f-contacto" name="contacto"
+                 placeholder="Nombre del responsable" required>
+          <span class="field-error-msg">Introduce tu nombre</span>
+        </div>
+        <div class="field">
+          <label for="f-cargo">Cargo / Relación con el negocio</label>
+          <select id="f-cargo" name="cargo">
+            <option value="">— Selecciona —</option>
+            <option>Propietario/a</option>
+            <option>Gerente</option>
+            <option>Encargado/a</option>
+            <option>Socio/a</option>
+            <option>Otro</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row2">
+        <div class="field">
+          <label for="f-telefono">Teléfono / WhatsApp <span class="req">*</span></label>
+          <div class="phone-wrap">
+            <input type="text" class="phone-prefix" value="+34" readonly>
+            <input type="tel" id="f-telefono" name="telefono"
+                   placeholder="600 000 000" required
+                   pattern="[0-9\s\-]{7,14}" title="Teléfono válido">
+          </div>
+          <p class="hint">📲 Te contactaremos por WhatsApp</p>
+          <span class="field-error-msg">Introduce un teléfono válido</span>
+        </div>
+        <div class="field">
+          <label for="f-whatsapp">WhatsApp alternativo</label>
+          <div class="phone-wrap">
+            <input type="text" class="phone-prefix" value="+34" readonly>
+            <input type="tel" id="f-whatsapp" name="whatsapp"
+                   placeholder="Si es diferente">
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="f-email">Email <span class="req">*</span></label>
+        <input type="email" id="f-email" name="email"
+               placeholder="tunegocio@email.com" required>
+        <span class="field-error-msg">Introduce un email válido</span>
+      </div>
+
+      <div class="row2">
+        <div class="field">
+          <label for="f-instagram">Instagram</label>
+          <input type="text" id="f-instagram" name="instagram" placeholder="@tunegocio">
+        </div>
+        <div class="field">
+          <label for="f-facebook">Facebook</label>
+          <input type="text" id="f-facebook" name="facebook" placeholder="facebook.com/tunegocio">
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ CARD 4: Más información ══ -->
+    <div class="card" id="card-4">
+      <div class="card-title">💡 Un poco más sobre tu negocio</div>
+      <div class="card-sub">Nos ayuda a preparar mejor tu propuesta personalizada</div>
+
+      <div class="field">
+        <label>¿Presencia actual en internet? <span class="req">*</span></label>
+        <div class="radio-group" id="presencia-group">
+          <div class="radio-item" onclick="selRadio(this,'p1','Tengo web propia')">
+            <input type="radio" name="presencia" value="Tengo web propia" id="p1">
+            <label for="p1">🌐 Tengo web propia</label>
+          </div>
+          <div class="radio-item" onclick="selRadio(this,'p2','Solo redes sociales')">
+            <input type="radio" name="presencia" value="Solo redes sociales" id="p2">
+            <label for="p2">📱 Solo redes sociales</label>
+          </div>
+          <div class="radio-item" onclick="selRadio(this,'p3','Solo en Google Maps')">
+            <input type="radio" name="presencia" value="Solo en Google Maps" id="p3">
+            <label for="p3">📍 Solo en Google Maps</label>
+          </div>
+          <div class="radio-item" onclick="selRadio(this,'p4','Sin presencia online')">
+            <input type="radio" name="presencia" value="Sin presencia online" id="p4">
+            <label for="p4">🚫 Sin presencia online</label>
+          </div>
+        </div>
+        <input type="hidden" id="presencia-val" required>
+      </div>
+
+      <hr class="card-divider">
+
+      <div class="row2">
+        <div class="field">
+          <label for="f-conocio">¿Cómo nos conociste?</label>
+          <select id="f-conocio" name="conocio">
+            <option value="">— Selecciona —</option>
+            <option>🔍 Google / Internet</option>
+            <option>📸 Instagram / Facebook</option>
+            <option>🎵 TikTok / YouTube</option>
+            <option>👥 Un amigo o conocido</option>
+            <option>📄 Volante / Publicidad impresa</option>
+            <option>🏪 Otro negocio de Ourense GO</option>
+            <option>📺 Radio / TV local</option>
+            <option>📦 Otro</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-urgencia">¿Cuándo quieres empezar?</label>
+          <select id="f-urgencia" name="urgencia">
+            <option value="">— Selecciona —</option>
+            <option>Cuanto antes mejor</option>
+            <option>Esta semana</option>
+            <option>Este mes</option>
+            <option>En 1-2 meses</option>
+            <option>Solo estoy explorando</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="f-mensaje">Mensaje o consulta adicional</label>
+        <textarea id="f-mensaje" name="mensaje"
+                  placeholder="Ej: Me gustaría algo parecido a tal web, quiero destacar el servicio de delivery, tengo fotos del local para enviar por WhatsApp…"></textarea>
+        <p class="hint">Opcional · Cuéntanos todo lo que necesites</p>
+      </div>
+    </div>
+
+    <!-- TRUST -->
+    <div class="trust-row">
+      <span class="trust-badge">🔒 Datos seguros</span>
+      <span class="trust-badge">🆓 100% gratuito</span>
+      <span class="trust-badge">📞 Respuesta en 24h</span>
+      <span class="trust-badge">🏆 +47 negocios publicados</span>
+    </div>
+
+    <!-- SUBMIT -->
+    <button type="submit" class="submit-btn" id="submit-btn">
+      <div class="spinner"></div>
+      <span class="btn-text">🚀 Quiero publicar mi negocio gratis</span>
+    </button>
+
+    <p class="footer-note">
+      Al enviar aceptas que Ourense GO se ponga en contacto contigo.<br>
+      Tus datos no se compartirán con terceros. ·
+      <a href="https://ourensego.es/privacidad" style="color:var(--pri)">Política de privacidad</a>
+    </p>
+  </form>
+</div>
+
+<script>
+// ═══════════════════════════════════════
+// RADIO BUTTONS
+// ═══════════════════════════════════════
+function selRadio(el, id, val) {
+  document.querySelectorAll('#presencia-group .radio-item').forEach(r => r.classList.remove('checked'));
+  el.classList.add('checked');
+  document.getElementById(id).checked = true;
+  document.getElementById('presencia-val').value = val;
+  document.getElementById('presencia-val').setCustomValidity('');
+  document.getElementById('presencia-group').classList.remove('error-border');
+}
+
+// ═══════════════════════════════════════
+// SCROLL PROGRESS
+// ═══════════════════════════════════════
+(function() {
+  const CARDS = ['card-1','card-2','card-3','card-4'];
+  const DOTS  = ['dot-1','dot-2','dot-3','dot-4'];
+  const LINES = ['line-1','line-2','line-3'];
+
+  function update() {
+    const mid = window.scrollY + window.innerHeight * 0.42;
+    let active = 0;
+    CARDS.forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (el && el.offsetTop <= mid) active = i;
+    });
+    DOTS.forEach((id, i) => document.getElementById(id).classList.toggle('done', i <= active));
+    LINES.forEach((id, i) => document.getElementById(id).classList.toggle('done', i < active));
+  }
+  window.addEventListener('scroll', update, {passive: true});
+  update();
+})();
+
+// ═══════════════════════════════════════
+// VALIDATION
+// ═══════════════════════════════════════
+function vField(el) {
+  const ok = el.checkValidity();
+  el.classList.toggle('error', !ok);
+  return ok;
+}
+
+function vAll() {
+  let ok = true;
+  document.querySelectorAll('#lead-form [required]').forEach(el => { if (!vField(el)) ok = false; });
+
+  const pval = document.getElementById('presencia-val');
+  if (!pval.value) {
+    pval.setCustomValidity('requerido');
+    document.getElementById('presencia-group').classList.add('error-border');
+    ok = false;
+  } else {
+    pval.setCustomValidity('');
+    document.getElementById('presencia-group').classList.remove('error-border');
+  }
+  return ok;
+}
+
+document.querySelectorAll('#lead-form input[required], #lead-form select[required]').forEach(el => {
+  el.addEventListener('blur',  () => vField(el));
+  el.addEventListener('input', () => { el.classList.remove('error'); });
+});
+
+// ═══════════════════════════════════════
+// REDIRECT AFTER SUCCESS
+// ═══════════════════════════════════════
+function doRedirect() {
+  const overlay = document.getElementById('redir-overlay');
+  overlay.classList.add('show');
+  // Animate progress bar
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      document.getElementById('redir-bar').classList.add('go');
+    });
+  });
+  // Redirect after 2 seconds
+  setTimeout(() => {
+    window.location.href = REDIRECT_URL;
+  }, 2100);
+}
+
+// ═══════════════════════════════════════
+// SUBMIT
+// ═══════════════════════════════════════
+document.getElementById('lead-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+
+  // Anti-spam honeypot
+  if (document.querySelector('input[name=website_url]').value) return;
+
+  // Validate
+  const errBox = document.getElementById('error-box');
+  if (!vAll()) {
+    errBox.classList.add('show');
+    const firstErr = document.querySelector('#lead-form .error, #presencia-group.error-border');
+    if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+  errBox.classList.remove('show');
+
+  // Loading
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.classList.add('loading');
+
+  // Build payload — todos los campos al Sheet
+  const payload = {
+    fecha:      new Date().toLocaleString('es-ES', { timeZone: 'Europe/Madrid' }),
+    negocio:    document.getElementById('f-negocio').value.trim(),
+    categoria:  document.getElementById('f-categoria').value,
+    horario:    document.getElementById('f-horario').value,
+    calle:      document.getElementById('f-calle').value.trim(),
+    barrio:     document.getElementById('f-barrio').value.trim(),
+    cp:         document.getElementById('f-cp').value.trim(),
+    ciudad:     document.getElementById('f-ciudad').value.trim(),
+    gmaps:      document.getElementById('f-gmaps').value.trim(),
+    contacto:   document.getElementById('f-contacto').value.trim(),
+    cargo:      document.getElementById('f-cargo').value,
+    telefono:   '+34 ' + document.getElementById('f-telefono').value.trim(),
+    whatsapp:   document.getElementById('f-whatsapp').value.trim()
+                  ? '+34 ' + document.getElementById('f-whatsapp').value.trim() : '',
+    email:      document.getElementById('f-email').value.trim(),
+    instagram:  document.getElementById('f-instagram').value.trim(),
+    facebook:   document.getElementById('f-facebook').value.trim(),
+    presencia:  document.getElementById('presencia-val').value,
+    conocio:    document.getElementById('f-conocio').value,
+    urgencia:   document.getElementById('f-urgencia').value,
+    mensaje:    document.getElementById('f-mensaje').value.trim(),
+    origen:     window.location.href,
+    estado:     '🟡 Nuevo lead'
+  };
+
+  try {
+    if (!GAS_URL || GAS_URL === 'TU_SCRIPT_URL_AQUI') {
+      console.log('⚠️ GAS_URL no configurada. Payload del lead:', payload);
+      await new Promise(r => setTimeout(r, 1000));
+    } else {
+      await fetch(GAS_URL, {
+        method:  'POST',
+        mode:    'no-cors',
+        headers: { 'Content-Type': 'text/plain' },
+        body:    JSON.stringify(payload)
+      });
+    }
+  } catch (_) {
+    // Con no-cors el fetch lanza error por respuesta opaca, pero los datos llegan
+  }
+
+  doRedirect();
+});
+</script>
+
+<!--
+══════════════════════════════════════════════════════
+  CÓDIGO PARA GOOGLE APPS SCRIPT
+  (Extensions → Apps Script dentro de tu Google Sheet)
+══════════════════════════════════════════════════════
+
+const SHEET_ID = '1tXTpPRkXPrFuGuQJF5qK71a0beo_Ewdx_sFqr_RcN6g';
+
+function doPost(e) {
+  try {
+    const sheet = SpreadsheetApp.openById(SHEET_ID).getActiveSheet();
+
+    if (sheet.getLastRow() === 0) {
+      const headers = [
+        'Fecha','Negocio','Categoría','Horario',
+        'Calle y Número','Barrio / Zona','Código Postal','Ciudad','Google Maps',
+        'Contacto','Cargo','Teléfono','WhatsApp alt.','Email',
+        'Instagram','Facebook',
+        'Presencia Web','Cómo nos conoció','Urgencia',
+        'Mensaje','Origen','Estado'
+      ];
+      sheet.appendRow(headers);
+      sheet.getRange(1,1,1,headers.length)
+        .setFontWeight('bold')
+        .setBackground('#f9a825')
+        .setFontColor('#ffffff');
+      sheet.setFrozenRows(1);
+    }
+
+    const d = JSON.parse(e.postData.contents);
+
+    sheet.appendRow([
+      d.fecha     || '',  d.negocio    || '',  d.categoria  || '',  d.horario   || '',
+      d.calle     || '',  d.barrio     || '',  d.cp         || '',  d.ciudad    || '',  d.gmaps     || '',
+      d.contacto  || '',  d.cargo      || '',  d.telefono   || '',  d.whatsapp  || '',  d.email     || '',
+      d.instagram || '',  d.facebook   || '',
+      d.presencia || '',  d.conocio    || '',  d.urgencia   || '',
+      d.mensaje   || '',  d.origen     || '',  d.estado     || '🟡 Nuevo lead'
+    ]);
+
+    return ContentService
+      .createTextOutput(JSON.stringify({ result: 'ok' }))
+      .setMimeType(ContentService.MimeType.JSON);
+
+  } catch (err) {
+    return ContentService
+      .createTextOutput(JSON.stringify({ result: 'error', msg: err.toString() }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function doGet(e) {
+  return ContentService
+    .createTextOutput(JSON.stringify({ result: 'ok', status: 'API activa' }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+// Ejecuta esto desde el editor para verificar que funciona:
+function testScript() {
+  const sheet = SpreadsheetApp.openById(SHEET_ID).getActiveSheet();
+  Logger.log('Filas en sheet: ' + sheet.getLastRow());
+}
+══════════════════════════════════════════════════════
+-->
+</body>
+</html>
